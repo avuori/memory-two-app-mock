@@ -474,7 +474,7 @@ export default function App() {
         {/* Footer Link */}
         <div className="px-6 py-3 bg-white text-center">
           <span className="text-xs text-muted-foreground">
-            Mock app — Early sign ups at {' '}
+            Mock app — Early sign up at {' '}
             <a 
               href="https://www.memory2.app?utm_source=memory2-mock-app" 
               target="_blank" 
