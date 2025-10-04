@@ -1,4 +1,4 @@
-import { useState } from 'react';
+import React, { useState } from 'react';
 import { ContactCard } from './components/ContactCard';
 import { MemoryItem } from './components/MemoryItem';
 import { VoiceButton } from './components/VoiceButton';
@@ -99,12 +99,12 @@ export default function App() {
             </TabsList>
 
             <TabsContent value="home" className="px-6 py-4 mt-0">
-              <button className="w-full p-6 bg-gradient-to-br from-blue-500 to-blue-600 text-white rounded-2xl hover:opacity-90 transition-opacity mb-6 shadow-lg">
-                <Mic className="w-8 h-8 mx-auto mb-3" />
+              <div className="flex flex-col items-center">
+                <VoiceButton />
                 <span>Add a memory or ask anything</span>
-              </button>
+              </div>
 
-              <div>
+              <div className="mt-8">
                 <h3 className="text-foreground mb-3">Follow ups</h3>
                 {followUps.map((followUp, idx) => (
                   <FollowUpCard key={idx} {...followUp} />
@@ -151,9 +151,6 @@ export default function App() {
             </TabsContent>
           </Tabs>
         </div>
-
-        {/* Voice Button */}
-        <VoiceButton />
 
         {/* Bottom Safe Area */}
         <div className="h-8 bg-gradient-to-b from-slate-50 to-white" />
