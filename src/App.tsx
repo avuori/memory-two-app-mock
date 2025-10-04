@@ -463,6 +463,21 @@ export default function App() {
           </Tabs>
         </div>
 
+        {/* Footer Link */}
+        <div className="px-6 py-3 bg-white text-center">
+          <span className="text-xs text-muted-foreground">
+            Mock app — Early sign ups at {' '}
+            <a 
+              href="https://www.memory2.app?utm_source=memory2-mock-app" 
+              target="_blank" 
+              rel="noopener noreferrer"
+              className="text-blue-600 hover:text-blue-800 underline transition-colors"
+            >
+              memory2.app
+            </a>
+          </span>
+        </div>
+
         {/* Bottom Safe Area */}
         <div className="h-8 bg-gradient-to-b from-slate-50 to-white" />
       </div>
