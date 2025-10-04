@@ -450,7 +450,7 @@ export default function App() {
               </div>
               
               <div className="space-y-3">
-                {['App Integrations', 'Voice Settings', 'Notifications', 'Privacy & Data', 'Backup & Sync', 'About Memory2'].map((item, idx) => (
+                {['App Integrations', 'Notifications', 'Privacy & Data', 'Backup & Sync'].map((item, idx) => (
                   <button
                     key={idx}
                     className="w-full p-4 bg-white border border-border rounded-lg hover:bg-accent transition-colors text-left"
@@ -458,6 +458,14 @@ export default function App() {
                     {item}
                   </button>
                 ))}
+                <a
+                  href="https://www.memory2.app/faq"
+                  target="_blank"
+                  rel="noopener noreferrer"
+                  className="w-full p-4 bg-white border border-border rounded-lg hover:bg-accent transition-colors text-left block"
+                >
+                  About Memory2
+                </a>
               </div>
             </TabsContent>
           </Tabs>
