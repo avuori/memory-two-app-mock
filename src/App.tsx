@@ -3,11 +3,13 @@ import { ContactCard } from './components/ContactCard';
 import { MemoryItem } from './components/MemoryItem';
 import { VoiceButton } from './components/VoiceButton';
 import { FollowUpCard } from './components/FollowUpCard';
-import { Home, Users, Clock, Settings, MessageCircle, Mic } from 'lucide-react';
+import { Home, Users, Clock, Settings, MessageCircle, Mic, Search } from 'lucide-react';
 import { Tabs, TabsContent, TabsList, TabsTrigger } from './components/ui/tabs';
+import { Input } from './components/ui/input';
 
 export default function App() {
   const [activeTab, setActiveTab] = useState('home');
+  const [searchQuery, setSearchQuery] = useState('');
 
   const contacts = [
     {
@@ -75,6 +77,13 @@ export default function App() {
     }
   ];
 
+  // Filter contacts based on search query
+  const filteredContacts = contacts.filter(contact =>
+    contact.name.toLowerCase().includes(searchQuery.toLowerCase()) ||
+    contact.recentNote.toLowerCase().includes(searchQuery.toLowerCase()) ||
+    contact.tags.some(tag => tag.toLowerCase().includes(searchQuery.toLowerCase()))
+  );
+
   return (
     <div className="size-full bg-background flex items-center justify-center">
       {/* Mobile Container */}
@@ -99,9 +108,11 @@ export default function App() {
             </TabsList>
 
             <TabsContent value="home" className="px-6 py-4 mt-0">
-              <div className="flex flex-col items-center">
+              <div className="flex flex-col items-center space-y-3">
                 <VoiceButton />
-                <span>Add a memory or ask anything</span>
+                <span className="text-muted-foreground text-sm text-center max-w-xs leading-relaxed">
+                  Add a memory or ask anything
+                </span>
               </div>
 
               <div className="mt-8">
@@ -115,11 +126,30 @@ export default function App() {
             <TabsContent value="contacts" className="px-6 py-4 mt-0">
               <div className="mb-4">
                 <h2 className="text-foreground mb-1">All Contacts</h2>
-                <p className="text-muted-foreground text-sm">{contacts.length} people in your network</p>
+                <p className="text-muted-foreground text-sm">{filteredContacts.length} people in your network</p>
               </div>
-              {contacts.map((contact, idx) => (
+              
+              {/* Search Box */}
+              <div className="relative mb-4">
+                <Search className="absolute left-3 top-1/2 transform -translate-y-1/2 text-muted-foreground w-4 h-4" />
+                <Input
+                  type="text"
+                  placeholder="Search contacts, notes, or tags..."
+                  value={searchQuery}
+                  onChange={(e) => setSearchQuery(e.target.value)}
+                  className="pl-10 pr-4 py-2 w-full"
+                />
+              </div>
+
+              {filteredContacts.map((contact, idx) => (
                 <ContactCard key={idx} {...contact} />
               ))}
+              
+              {filteredContacts.length === 0 && searchQuery && (
+                <div className="text-center py-8">
+                  <p className="text-muted-foreground">No contacts found matching "{searchQuery}"</p>
+                </div>
+              )}
             </TabsContent>
 
             <TabsContent value="recent" className="px-6 py-4 mt-0">
