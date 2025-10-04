@@ -4,13 +4,22 @@ interface MemoryItemProps {
   text: string;
   timestamp: string;
   person?: string;
+  profilePic?: string;
 }
 
-export function MemoryItem({ text, timestamp, person }: MemoryItemProps) {
+export function MemoryItem({ text, timestamp, person, profilePic }: MemoryItemProps) {
   return (
     <div className="flex gap-3 p-3 bg-accent/50 rounded-lg mb-2">
-      <div className="w-8 h-8 rounded-full bg-blue-500 flex items-center justify-center flex-shrink-0">
-        <MessageSquare className="w-4 h-4 text-white" />
+      <div className="w-8 h-8 rounded-full bg-blue-500 flex items-center justify-center flex-shrink-0 overflow-hidden">
+        {profilePic ? (
+          <img 
+            src={`/${profilePic}`} 
+            alt={person || 'Memory'}
+            className="w-full h-full object-cover"
+          />
+        ) : (
+          <MessageSquare className="w-4 h-4 text-white" />
+        )}
       </div>
       <div className="flex-1 min-w-0">
         {person && <p className="text-sm text-foreground mb-1">{person}</p>}

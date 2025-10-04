@@ -10,25 +10,30 @@ import { Input } from './components/ui/input';
 export default function App() {
   const [activeTab, setActiveTab] = useState('home');
   const [searchQuery, setSearchQuery] = useState('');
+  const [visibleMemories, setVisibleMemories] = useState(10);
+  const [isLoadingMore, setIsLoadingMore] = useState(false);
 
   const contacts = [
     {
-      name: 'Sarah Johnson',
+      name: 'Sarah Chen',
       lastInteraction: '2 days ago',
       recentNote: 'Starting new job at Google next month. Excited about the role in Cloud Infrastructure.',
-      tags: ['Work', 'Tech']
+      tags: ['Work', 'Tech'],
+      profilePic: 'sarah-testimonial.webp'
     },
     {
-      name: 'Mike Chen',
+      name: 'Marcus Rodriguez',
       lastInteraction: '5 days ago',
       recentNote: 'Loves cappuccinos with oat milk. Daughter Emma (7) plays soccer. Anniversary is June 15th.',
-      tags: ['Friend', 'Family']
+      tags: ['Friend', 'Family'],
+      profilePic: 'marcus-testimonial.webp'
     },
     {
-      name: 'Emily Rodriguez',
+      name: 'Emily Watson',
       lastInteraction: '1 week ago',
       recentNote: 'Planning a trip to Japan in October. Interested in traditional ceramics and temples.',
-      tags: ['Travel', 'Art']
+      tags: ['Travel', 'Art'],
+      profilePic: 'emily-testimonial.webp'
     },
     {
       name: 'David Park',
@@ -40,40 +45,218 @@ export default function App() {
 
   const recentMemories = [
     {
-      text: 'Talked with Sarah about her new job at Google starting next month',
-      timestamp: '2 hours ago',
-      person: 'Sarah Johnson'
+      text: 'Remember to call the dentist for annual checkup appointment',
+      timestamp: '1 hour ago',
+      person: 'Me'
     },
     {
-      text: 'Mike mentioned his daughter Emma scored 3 goals in her soccer game',
+      text: 'Talked with Sarah about her new job at Google starting next month',
+      timestamp: '2 hours ago',
+      person: 'Sarah Chen'
+    },
+    {
+      text: 'Marcus mentioned his daughter Emma scored 3 goals in her soccer game',
       timestamp: '5 days ago',
-      person: 'Mike Chen'
+      person: 'Marcus Rodriguez'
     },
     {
       text: 'Emily showed me photos from her research on Japanese pottery techniques',
       timestamp: '1 week ago',
-      person: 'Emily Rodriguez'
+      person: 'Emily Watson'
+    },
+    {
+      text: 'David shared photos of his new golden retriever Max playing in the park',
+      timestamp: '1 week ago',
+      person: 'David Park'
+    },
+    {
+      text: 'Need to research new laptop options - current one is getting slow',
+      timestamp: '1 week ago',
+      person: 'Me'
+    },
+    {
+      text: 'Sarah mentioned she\'s excited about the Cloud Infrastructure team at Google',
+      timestamp: '2 weeks ago',
+      person: 'Sarah Chen'
+    },
+    {
+      text: 'Marcus talked about his anniversary plans for June 15th with his wife',
+      timestamp: '2 weeks ago',
+      person: 'Marcus Rodriguez'
+    },
+    {
+      text: 'Emily discussed her upcoming trip to Japan and interest in traditional ceramics',
+      timestamp: '3 weeks ago',
+      person: 'Emily Watson'
+    },
+    {
+      text: 'David mentioned he\'s training for a marathon in November',
+      timestamp: '3 weeks ago',
+      person: 'David Park'
+    },
+    {
+      text: 'Sarah shared insights about her current role transition and career goals',
+      timestamp: '1 month ago',
+      person: 'Sarah Chen'
+    },
+    {
+      text: 'Marcus talked about Emma\'s soccer team winning their championship game',
+      timestamp: '1 month ago',
+      person: 'Marcus Rodriguez'
+    },
+    {
+      text: 'Emily shared her research on Japanese temple architecture and history',
+      timestamp: '1 month ago',
+      person: 'Emily Watson'
+    },
+    {
+      text: 'David discussed his experience adopting Max and the training process',
+      timestamp: '1 month ago',
+      person: 'David Park'
+    },
+    {
+      text: 'Sarah mentioned her excitement about working with cloud technologies',
+      timestamp: '6 weeks ago',
+      person: 'Sarah Chen'
+    },
+    {
+      text: 'Marcus talked about his family\'s weekend plans and Emma\'s school activities',
+      timestamp: '6 weeks ago',
+      person: 'Marcus Rodriguez'
+    },
+    {
+      text: 'Emily shared photos from her previous trip to Kyoto and favorite temples',
+      timestamp: '6 weeks ago',
+      person: 'Emily Watson'
+    },
+    {
+      text: 'David mentioned his running routine and preparation for the marathon',
+      timestamp: '6 weeks ago',
+      person: 'David Park'
+    },
+    {
+      text: 'Booked vacation time for December - need to plan trip details',
+      timestamp: '6 weeks ago',
+      person: 'Me'
+    },
+    {
+      text: 'Sarah discussed her career transition and excitement about new opportunities',
+      timestamp: '2 months ago',
+      person: 'Sarah Chen'
+    },
+    {
+      text: 'Marcus talked about his work-life balance and family priorities',
+      timestamp: '2 months ago',
+      person: 'Marcus Rodriguez'
+    },
+    {
+      text: 'Emily shared her passion for traditional Japanese arts and crafts',
+      timestamp: '2 months ago',
+      person: 'Emily Watson'
+    },
+    {
+      text: 'David discussed his fitness goals and motivation for running',
+      timestamp: '2 months ago',
+      person: 'David Park'
+    },
+    {
+      text: 'Sarah mentioned her interest in cloud computing and infrastructure',
+      timestamp: '2 months ago',
+      person: 'Sarah Chen'
+    },
+    {
+      text: 'Marcus talked about Emma\'s academic achievements and extracurricular activities',
+      timestamp: '2 months ago',
+      person: 'Marcus Rodriguez'
+    },
+    {
+      text: 'Emily discussed her research methodology for studying Japanese culture',
+      timestamp: '2 months ago',
+      person: 'Emily Watson'
+    },
+    {
+      text: 'David shared his experience with pet adoption and care responsibilities',
+      timestamp: '2 months ago',
+      person: 'David Park'
+    },
+    {
+      text: 'Started learning Spanish on Duolingo - 30 day streak achieved',
+      timestamp: '2 months ago',
+      person: 'Me'
+    },
+    {
+      text: 'Sarah talked about her professional development and learning goals',
+      timestamp: '3 months ago',
+      person: 'Sarah Chen'
+    },
+    {
+      text: 'Marcus mentioned his family traditions and holiday celebrations',
+      timestamp: '3 months ago',
+      person: 'Marcus Rodriguez'
+    },
+    {
+      text: 'Emily shared her academic background in art history and cultural studies',
+      timestamp: '3 months ago',
+      person: 'Emily Watson'
+    },
+    {
+      text: 'David discussed his fitness journey and running community involvement',
+      timestamp: '3 months ago',
+      person: 'David Park'
+    },
+    {
+      text: 'Sarah talked about her networking strategies and professional relationships',
+      timestamp: '3 months ago',
+      person: 'Sarah Chen'
+    },
+    {
+      text: 'Marcus shared stories about Emma\'s growth and development milestones',
+      timestamp: '3 months ago',
+      person: 'Marcus Rodriguez'
+    },
+    {
+      text: 'Emily discussed her travel philosophy and cultural immersion approach',
+      timestamp: '3 months ago',
+      person: 'Emily Watson'
+    },
+    {
+      text: 'David mentioned his volunteer work with animal shelters and rescue organizations',
+      timestamp: '3 months ago',
+      person: 'David Park'
+    },
+    {
+      text: 'Renewed gym membership - committed to 3x per week schedule',
+      timestamp: '3 months ago',
+      person: 'Me'
+    },
+    {
+      text: 'Set up automatic bill payments for utilities and insurance',
+      timestamp: '3 months ago',
+      person: 'Me'
     }
   ];
 
   const followUps = [
     {
-      name: 'Sarah Johnson',
+      name: 'Sarah Chen',
       suggestion: 'Congratulate her on starting at Google',
       reason: 'Job starts next month',
-      priority: 'high' as const
+      priority: 'high' as const,
+      profilePic: 'sarah-testimonial.webp'
     },
     {
-      name: 'Mike Chen',
+      name: 'Marcus Rodriguez',
       suggestion: 'Ask about Emma\'s soccer tournament',
       reason: 'Anniversary coming up on June 15th',
-      priority: 'medium' as const
+      priority: 'medium' as const,
+      profilePic: 'marcus-testimonial.webp'
     },
     {
-      name: 'Emily Rodriguez',
+      name: 'Emily Watson',
       suggestion: 'Share Japan travel tips',
       reason: 'Trip planned for October',
-      priority: 'medium' as const
+      priority: 'medium' as const,
+      profilePic: 'emily-testimonial.webp'
     }
   ];
 
@@ -83,6 +266,36 @@ export default function App() {
     contact.recentNote.toLowerCase().includes(searchQuery.toLowerCase()) ||
     contact.tags.some(tag => tag.toLowerCase().includes(searchQuery.toLowerCase()))
   );
+
+  // Get profile picture for a person
+  const getProfilePic = (personName: string) => {
+    if (personName === 'Me') {
+      return 'me.webp'; // Profile pic for personal reminders
+    }
+    const contact = contacts.find(c => c.name === personName);
+    return contact?.profilePic;
+  };
+
+  // Get visible memories for lazy loading
+  const visibleMemoriesList = recentMemories.slice(0, visibleMemories);
+
+  // Handle scroll to load more memories with simulated network delay
+  const handleScroll = async (e: React.UIEvent<HTMLDivElement>) => {
+    const { scrollTop, scrollHeight, clientHeight } = e.currentTarget;
+    if (scrollTop + clientHeight >= scrollHeight - 100 && 
+        visibleMemories < recentMemories.length && 
+        !isLoadingMore) {
+      
+      setIsLoadingMore(true);
+      
+      // Simulate network delay (800-1500ms)
+      const delay = Math.random() * 700 + 800;
+      await new Promise(resolve => setTimeout(resolve, delay));
+      
+      setVisibleMemories(prev => Math.min(prev + 10, recentMemories.length));
+      setIsLoadingMore(false);
+    }
+  };
 
   return (
     <div className="size-full bg-background flex items-center justify-center">
@@ -157,9 +370,46 @@ export default function App() {
                 <h2 className="text-foreground mb-1">Recent Memories</h2>
                 <p className="text-muted-foreground text-sm">Your latest captured moments</p>
               </div>
-              {recentMemories.map((memory, idx) => (
-                <MemoryItem key={idx} {...memory} />
-              ))}
+              <div 
+                className="max-h-[calc(100vh-200px)] overflow-y-auto"
+                onScroll={handleScroll}
+              >
+                {visibleMemoriesList.map((memory, idx) => (
+                  <MemoryItem 
+                    key={idx} 
+                    {...memory} 
+                    profilePic={getProfilePic(memory.person)}
+                  />
+                ))}
+                
+                {/* Loading indicator */}
+                {isLoadingMore && (
+                  <div className="text-center py-4">
+                    <div className="flex items-center justify-center space-x-2">
+                      <div className="animate-spin rounded-full h-4 w-4 border-b-2 border-primary"></div>
+                      <p className="text-muted-foreground text-sm">Loading more memories...</p>
+                    </div>
+                  </div>
+                )}
+                
+                {/* Load more prompt */}
+                {!isLoadingMore && visibleMemories < recentMemories.length && (
+                  <div className="text-center py-4">
+                    <p className="text-muted-foreground text-sm">
+                      Scroll down to load more memories...
+                    </p>
+                  </div>
+                )}
+                
+                {/* End of memories */}
+                {!isLoadingMore && visibleMemories >= recentMemories.length && recentMemories.length > 10 && (
+                  <div className="text-center py-4">
+                    <p className="text-muted-foreground text-sm">
+                      You've reached the end of your memories
+                    </p>
+                  </div>
+                )}
+              </div>
             </TabsContent>
 
             <TabsContent value="settings" className="px-6 py-4 mt-0">

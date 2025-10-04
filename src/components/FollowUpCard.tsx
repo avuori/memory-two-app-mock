@@ -6,9 +6,10 @@ interface FollowUpCardProps {
   suggestion: string;
   reason: string;
   priority?: 'high' | 'medium' | 'low';
+  profilePic?: string;
 }
 
-export function FollowUpCard({ name, suggestion, reason, priority = 'medium' }: FollowUpCardProps) {
+export function FollowUpCard({ name, suggestion, reason, priority = 'medium', profilePic }: FollowUpCardProps) {
   const priorityColors = {
     high: 'from-red-400 to-red-600',
     medium: 'from-blue-400 to-blue-600',
@@ -18,8 +19,16 @@ export function FollowUpCard({ name, suggestion, reason, priority = 'medium' }: 
   return (
     <Card className="p-4 mb-3 active:scale-[0.98] transition-transform cursor-pointer border-l-4 border-l-blue-500">
       <div className="flex gap-3">
-        <div className={`w-12 h-12 rounded-full bg-gradient-to-br ${priorityColors[priority]} flex items-center justify-center flex-shrink-0`}>
-          <User className="w-6 h-6 text-white" />
+        <div className={`w-12 h-12 rounded-full bg-gradient-to-br ${priorityColors[priority]} flex items-center justify-center flex-shrink-0 overflow-hidden`}>
+          {profilePic ? (
+            <img 
+              src={`/${profilePic}`} 
+              alt={name}
+              className="w-full h-full object-cover"
+            />
+          ) : (
+            <User className="w-6 h-6 text-white" />
+          )}
         </div>
         <div className="flex-1 min-w-0">
           <h3 className="text-foreground mb-1">{name}</h3>
