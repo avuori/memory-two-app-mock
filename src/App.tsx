@@ -450,7 +450,7 @@ export default function App() {
               </div>
               
               <div className="space-y-3">
-                {['App integrations', 'Voice Settings', 'Notifications', 'Privacy & Data', 'Backup & Sync', 'About Memory2'].map((item, idx) => (
+                {['App Integrations', 'Voice Settings', 'Notifications', 'Privacy & Data', 'Backup & Sync', 'About Memory2'].map((item, idx) => (
                   <button
                     key={idx}
                     className="w-full p-4 bg-white border border-border rounded-lg hover:bg-accent transition-colors text-left"
