@@ -10,6 +10,7 @@ import { Input } from './components/ui/input';
 export default function App() {
   const [activeTab, setActiveTab] = useState('home');
   const [searchQuery, setSearchQuery] = useState('');
+  const [memorySearchQuery, setMemorySearchQuery] = useState('');
   const [visibleMemories, setVisibleMemories] = useState(10);
   const [isLoadingMore, setIsLoadingMore] = useState(false);
 
@@ -276,14 +277,25 @@ export default function App() {
     return contact?.profilePic;
   };
 
+  // Filter memories based on search query
+  const filteredMemories = recentMemories.filter(memory =>
+    memory.text.toLowerCase().includes(memorySearchQuery.toLowerCase()) ||
+    memory.person.toLowerCase().includes(memorySearchQuery.toLowerCase())
+  );
+
+  // Reset visible memories when search query changes
+  React.useEffect(() => {
+    setVisibleMemories(10);
+  }, [memorySearchQuery]);
+
   // Get visible memories for lazy loading
-  const visibleMemoriesList = recentMemories.slice(0, visibleMemories);
+  const visibleMemoriesList = filteredMemories.slice(0, visibleMemories);
 
   // Handle scroll to load more memories with simulated network delay
   const handleScroll = async (e: React.UIEvent<HTMLDivElement>) => {
     const { scrollTop, scrollHeight, clientHeight } = e.currentTarget;
     if (scrollTop + clientHeight >= scrollHeight - 100 && 
-        visibleMemories < recentMemories.length && 
+        visibleMemories < filteredMemories.length && 
         !isLoadingMore) {
       
       setIsLoadingMore(true);
@@ -292,7 +304,7 @@ export default function App() {
       const delay = Math.random() * 700 + 800;
       await new Promise(resolve => setTimeout(resolve, delay));
       
-      setVisibleMemories(prev => Math.min(prev + 10, recentMemories.length));
+      setVisibleMemories(prev => Math.min(prev + 10, filteredMemories.length));
       setIsLoadingMore(false);
     }
   };
@@ -370,6 +382,18 @@ export default function App() {
                 <h2 className="text-foreground mb-1">Recent Memories</h2>
                 <p className="text-muted-foreground text-sm">Your latest captured moments</p>
               </div>
+              
+              {/* Search Box */}
+              <div className="relative mb-4">
+                <Search className="absolute left-3 top-1/2 transform -translate-y-1/2 text-muted-foreground w-4 h-4" />
+                <Input
+                  type="text"
+                  placeholder="Search memories or people..."
+                  value={memorySearchQuery}
+                  onChange={(e) => setMemorySearchQuery(e.target.value)}
+                  className="pl-10 pr-4 py-2 w-full"
+                />
+              </div>
               <div 
                 className="max-h-[calc(100vh-200px)] overflow-y-auto"
                 onScroll={handleScroll}
@@ -393,7 +417,7 @@ export default function App() {
                 )}
                 
                 {/* Load more prompt */}
-                {!isLoadingMore && visibleMemories < recentMemories.length && (
+                {!isLoadingMore && visibleMemories < filteredMemories.length && (
                   <div className="text-center py-4">
                     <p className="text-muted-foreground text-sm">
                       Scroll down to load more memories...
@@ -401,8 +425,15 @@ export default function App() {
                   </div>
                 )}
                 
+                {/* No results found */}
+                {filteredMemories.length === 0 && memorySearchQuery && (
+                  <div className="text-center py-8">
+                    <p className="text-muted-foreground">No memories found matching "{memorySearchQuery}"</p>
+                  </div>
+                )}
+                
                 {/* End of memories */}
-                {!isLoadingMore && visibleMemories >= recentMemories.length && recentMemories.length > 10 && (
+                {!isLoadingMore && visibleMemories >= filteredMemories.length && filteredMemories.length > 10 && (
                   <div className="text-center py-4">
                     <p className="text-muted-foreground text-sm">
                       You've reached the end of your memories
