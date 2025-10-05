@@ -6,6 +6,7 @@ import { FollowUpCard } from './components/FollowUpCard';
 import { Home, Users, Clock, Settings, MessageCircle, Mic, Search } from 'lucide-react';
 import { Tabs, TabsContent, TabsList, TabsTrigger } from './components/ui/tabs';
 import { Input } from './components/ui/input';
+import { Analytics } from '@vercel/analytics/react';
 
 export default function App() {
   const [activeTab, setActiveTab] = useState('home');
@@ -489,6 +490,7 @@ export default function App() {
         {/* Bottom Safe Area */}
         <div className="h-8 bg-gradient-to-b from-slate-50 to-white" />
       </div>
+      <Analytics />
     </div>
   );
 }
